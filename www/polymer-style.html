@@ -1,0 +1,57 @@
+<custom-style>  
+  <style is="custom-style" include="iron-flex iron-flex-alignment">
+
+  :root {
+    --main-domular-color: #4285f4;
+    --nebula-switch-checked-color: var(--main-domular-color);
+    --nebula-switch-color: lightgrey;
+  }
+
+    html, body {
+      margin: 0;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #f1f1f1;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    app-toolbar, domular-section-container
+    {
+      background-color: var(--main-domular-color);
+      color: #fff;
+    }
+
+    paper-icon-button {
+      --paper-icon-button-ink-color: white;
+    }
+
+    paper-icon-button + [main-title] {
+      margin-left: 24px;
+    }
+    paper-progress {
+      display: block;
+      width: 100%;
+      --paper-progress-active-color: rgba(255, 255, 255, 0.5);
+      --paper-progress-container-color: transparent;
+    }
+    paper-card {
+      margin-bottom: 1rem;
+    }
+    app-header {
+      @apply --layout-fixed-top;
+      color: #fff;
+      --app-header-background-rear-layer: {
+        background-color: #ef6c00;
+      };
+    }
+
+    app-drawer {
+      /*--app-drawer-scrim-background: rgba(100, 100, 100, 0.8);*/
+      --app-drawer-width: 350px;
+      --app-drawer-content-container: {
+        background-color: white;
+      }
+    }
+  </style>
+</custom-style>

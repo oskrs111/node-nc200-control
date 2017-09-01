@@ -1,0 +1,415 @@
+<link rel="import" href="./../nc200-style/nc200-style.html">
+<base href="./../../bower_components/">
+<link rel="import" href="polymer/polymer-element.html">
+<link rel="import" href="paper-card/paper-card.html">
+<link rel="import" href="paper-input/paper-input.html">
+
+
+<dom-module id="nc200-video-ctrls">
+  <template>
+    <style include="nc200-style-module">
+      :host {
+        display: block;
+        width: 100%;       
+      }
+
+      #wrapper
+      {
+        width: 100%;       
+      }
+      
+      #flexWrapper
+      {
+        display: flex;        
+        flex-direction: row;        
+        align-content: baseline;  
+        padding: 15px;
+      }
+
+      #flexColumnLeft
+      {
+        justify-content: flex-start;
+        display: flex;       
+        flex-wrap: wrap; 
+        flex-direction: row;
+        align-content: baseline;  
+        width: calc(80% - (var(--layout-padding)*2));
+      }
+
+      #flexColumnRight
+      {
+        justify-content: flex-end;
+        display: flex;        
+        flex-direction: row;
+        align-content: baseline;  
+        width: calc(20% - (var(--layout-padding)*2));
+      }
+
+    @media only screen and (max-device-width: 716px) {
+    #flexWrapper { flex-direction: column;}
+    #flexColumnLeft, #flexColumnRight{ flex-direction: column; justify-content: center; width: calc(100% - (var(--layout-padding)*2));}    
+    }  
+
+</style>
+    <paper-card id="wrapper" heading="NC200 Video Controls">
+    <div id="flexWrapper">  
+    <div id="flexColumnLeft">    
+    <paper-input id="brightness_id" class$="[[_brightness_class]] nc200-input" type="number" always-float-label label="Brightness" value="{{_brightness.value}}" min="{{_brightness.minimum}}" max="{{_brightness.maximum}}"></paper-input>
+    <paper-input id="saturation_id" class$="[[_saturation_class]] nc200-input" type="number" always-float-label label="Saturation" value="{{_saturation.value}}" min="{{_saturation.minimum}}" max="{{_saturation.maximum}}"></paper-input>
+    <paper-input id="contrast_id"   class$="[[_contrast_class]]  nc200-input"   type="number" always-float-label label="Contrast"   value="{{_contrast.value}}"   min="{{_contrast.minimum}}"   max="{{_contrast.maximum}}"></paper-input>
+    <paper-input id="hue_id"        class$="[[_hue_class]]  nc200-input"        type="number" always-float-label label="Hue"        value="{{_hue.value}}"        min="{{_hue.minimum}}"        max="{{_hue.maximum}}"></paper-input>
+    <paper-input id="grama_id"      class$="[[_grama_class]]  nc200-input"      type="number" always-float-label label="Grama"      value="{{_grama.value}}"      min="{{_grama.minimum}}"      max="{{_grama.maximum}}"></paper-input>
+    <paper-input id="sharpness_id"  class$="[[_sharpness_class]]  nc200-input"  type="number" always-float-label label="Sharpness"  value="{{_sharpness.value}}"  min="{{_sharpness.minimum}}"  max="{{_sharpness.maximum}}"></paper-input>    
+    <paper-input id="backlight_compensation_id"  class$="[[_backlight_compensation_class]]  nc200-input"  type="number" always-float-label label="Backlight compensation"  value="{{_backlight_compensation.value}}"  min="{{_backlight_compensation.minimum}}"  max="{{_backlight_compensation.maximum}}"></paper-input>
+    <paper-input id="powerline_frequency_id"     class$="[[_powerline_frequency_class]]  nc200-input"     type="number" always-float-label label="Powerline frequency"     value="{{_powerline_frequency.value}}"     min="{{_powerline_frequency.minimum}}"     max="{{_powerline_frequency.maximum}}"></paper-input>
+    <paper-input id="image_quality_id"           class$="[[_image_quality_class]]  nc200-input"           type="number" always-float-label label="Image quality"           value="{{_image_quality.value}}"           min="{{_image_quality.minimum}}"           max="{{_image_quality.maximum}}"></paper-input>
+    <paper-input id="flip_id"   class$="[[_flip_class]]  nc200-input"   type="number" always-float-label label="Flip"   value="{{_flip.value}}"   min="{{_flip.minimum}}"   max="{{_flip.maximum}}"></paper-input>
+    <paper-input id="mirror_id" class$="[[_mirror_class]]  nc200-input" type="number" always-float-label label="Mirror" value="{{_mirror.value}}" min="{{_mirror.minimum}}" max="{{_mirror.maximum}}"></paper-input>
+        
+  </div>
+    <div id="flexColumnRight">  
+    <paper-button id="loginButton_id" raised disabled class$="[[_loginButton_class]] nc200-control" on-click="onUpdate">Update</paper-button>
+  </div>  
+  </div>
+
+    </paper-card>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class Nc200VideoCtrls extends Polymer.Element {
+      static get is() { return 'nc200-video-ctrls'; }
+      static get properties() {
+        return {
+          _brightness: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _saturation: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _contrast: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _hue: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _grama: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _sharpness: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _backlight_compensation: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _powerline_frequency: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _image_quality: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _flip: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _mirror: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
+          _brightness_class: {type: String, notify: false, value: ""},
+          _saturation_class: {type: String, notify: false, value: ""},
+          _contrast_class: {type: String, notify: false, value: ""},
+          _ready: {type: Number, notify: true, value: 0, observer: '_readyChanged'},
+          _loginButton_class: {type: String, notify: false, value: "nc200-button nc200-disabled"}
+        };
+      }
+
+      static get observers() {
+        return [
+            '_brightnessChanged(_brightness.value)',
+            '_saturationChanged(_saturation.value)',
+            '_contrastChanged(_contrast.value)',
+            '_hueChanged(_hue.value)',
+            '_gramaChanged(_grama.value)',
+            '_sharpnessChanged(_sharpness.value)',
+            '_backlight_compensationChanged(_backlight_compensation.value)',
+            '_powerline_frequencyChanged(_powerline_frequency.value)',
+            '_image_qualityChanged(_image_quality.value)',                                  
+            '_flipChanged(_flip.value)',
+            '_mirrorChanged(_mirror.value)'
+        ]
+      }
+
+      ready() {
+        super.ready();    
+      }
+
+      update(data)
+      //OSLL: Expected data ->
+      //getvideoctrls, data: {"errorCode" : 0, 
+      //                      "brightness" : {"value" : 0, "minimum" : -127, "maximum" : 127}, 
+      //                      "contrast" : {"value" : 36, "minimum" : 0, "maximum" : 127}, 
+      //                      "saturation" : {"value" : 64, "minimum" : 0, "maximum" : 128}, 
+      //                      "hue" : {"value" : 0, "minimum" : -40, "maximum" : 40}, 
+      //                      "grama" : {"value" : 96, "minimum" : 72, "maximum" : 255}, 
+      //                      "sharpness" : {"value" : 12, "minimum" : 0, "maximum" : 15}, 
+      //                      "backlight_compensation" : {"value" : 0, "minimum" : 0, "maximum" : 2}, 
+      //                      "powerline_frequency" : {"value" : 0, "minimum" : 0, "maximum" : 2}, 
+      //                      "image_quality" : {"value" : 16, "minimum" : 0, "maximum" : 255}, 
+      //                      "flip" : {"value" : 1, "minimum" : 0, "maximum" : 1}, 
+      //                      "mirror" : {"value" : 1, "minimum" : 0, "maximum" : 1}, "_end" : 0} 
+      {       
+        try {
+          let obj = JSON.parse(data);
+          this._brightness.minimum = obj.brightness.minimum;
+          this._brightness.maximum = obj.brightness.maximum;
+          this._brightness.value = obj.brightness.value;
+          this.notifyPath('_brightness.minimum');
+          this.notifyPath('_brightness.maximum');
+          this.notifyPath('_brightness.value');
+
+          this._saturation.minimum = obj.saturation.minimum;
+          this._saturation.maximum = obj.saturation.maximum;
+          this._saturation.value = obj.saturation.value;
+          this.notifyPath('_saturation.minimum');
+          this.notifyPath('_saturation.maximum');
+          this.notifyPath('_saturation.value');
+
+          this._contrast.minimum = obj.contrast.minimum;
+          this._contrast.maximum = obj.contrast.maximum;
+          this._contrast.value = obj.contrast.value;
+          this.notifyPath('_contrast.minimum');
+          this.notifyPath('_contrast.maximum');
+          this.notifyPath('_contrast.value');          
+
+          this._hue.minimum = obj.hue.minimum;
+          this._hue.maximum = obj.hue.maximum;
+          this._hue.value = obj.hue.value;
+          this.notifyPath('_hue.minimum');
+          this.notifyPath('_hue.maximum');
+          this.notifyPath('_hue.value');         
+
+          this._grama.minimum = obj.grama.minimum;
+          this._grama.maximum = obj.grama.maximum;
+          this._grama.value = obj.grama.value;
+          this.notifyPath('_grama.minimum');
+          this.notifyPath('_grama.maximum');
+          this.notifyPath('_grama.value');      
+
+          this._sharpness.minimum = obj.sharpness.minimum;
+          this._sharpness.maximum = obj.sharpness.maximum;
+          this._sharpness.value = obj.sharpness.value;
+          this.notifyPath('_sharpness.minimum');
+          this.notifyPath('_sharpness.maximum');
+          this.notifyPath('_sharpness.value');  
+
+          this._backlight_compensation.minimum = obj.backlight_compensation.minimum;
+          this._backlight_compensation.maximum = obj.backlight_compensation.maximum;
+          this._backlight_compensation.value = obj.backlight_compensation.value;
+          this.notifyPath('_backlight_compensation.minimum');
+          this.notifyPath('_backlight_compensation.maximum');
+          this.notifyPath('_backlight_compensation.value');  
+
+          this._powerline_frequency.minimum = obj.powerline_frequency.minimum;
+          this._powerline_frequency.maximum = obj.powerline_frequency.maximum;
+          this._powerline_frequency.value = obj.powerline_frequency.value;
+          this.notifyPath('_powerline_frequency.minimum');
+          this.notifyPath('_powerline_frequency.maximum');
+          this.notifyPath('_powerline_frequency.value');  
+
+          this._image_quality.minimum = obj.image_quality.minimum;
+          this._image_quality.maximum = obj.image_quality.maximum;
+          this._image_quality.value = obj.image_quality.value;
+          this.notifyPath('_image_quality.minimum');
+          this.notifyPath('_image_quality.maximum');
+          this.notifyPath('_image_quality.value');  
+
+          this._flip.minimum = obj.flip.minimum;
+          this._flip.maximum = obj.flip.maximum;
+          this._flip.value = obj.flip.value;
+          this.notifyPath('_flip.minimum');
+          this.notifyPath('_flip.maximum');
+          this.notifyPath('_flip.value');            
+
+          this._mirror.minimum = obj.mirror.minimum;
+          this._mirror.maximum = obj.mirror.maximum;
+          this._mirror.value = obj.mirror.value;
+          this.notifyPath('_mirror.minimum');
+          this.notifyPath('_mirror.maximum');
+          this.notifyPath('_mirror.value');                 
+
+        } catch (e) {
+          this.dispatchEvent(new CustomEvent('parseError_msg', {bubbles: true, composed: true, detail: e}));
+        }
+      }
+      
+      onUpdate(){
+        let data = {brightness: this._brightness,
+                   saturation: this._saturation,
+                   contrast: this._contrast,
+                   hue: this._hue,
+                   grama: this._grama,
+                   sharpness: this._sharpness,
+                   backlight_compensation: this._backlight_compensation,
+                   powerline_frequency: this._powerline_frequency,
+                   image_quality: this._image_quality,
+                   flip: this._flip,
+                   mirror:this._mirror};
+
+         this.dispatchEvent(new CustomEvent('updateVideoCtrls_msg', {bubbles: true, composed: true, detail: data}));
+
+         this._brightness_class = "nc200-wait";
+         this._saturation_class = "nc200-wait";
+         this._contrast_class = "nc200-wait";
+         this._grama_class = "nc200-wait";
+         this._hue_class = "nc200-wait";
+         this._sharpness_class = "nc200-wait";
+         this._powerline_frequency_class = "nc200-wait";
+         this._image_quality_class = "nc200-wait";
+         this._backlight_compensation_class = "nc200-wait";
+         this._flip_class = "nc200-wait";
+         this._mirror_class = "nc200-wait";
+      }
+
+      _brightnessChanged(val){        
+        if(this._brightness.minimum != this._brightness.maximum)
+        {            
+          this._ready |= 0x0001;
+          this._brightness_class = "nc200-ready";
+        }  
+        else
+        {         
+          this._ready &= ~0x0001;
+          this._brightness_class = "";
+        }
+      }
+
+      _saturationChanged(val){
+        if(this._saturation.minimum != this._saturation.maximum)
+        {  
+          this._ready |= 0x0002;
+          this._saturation_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0002;
+          this._saturation_class = "";
+        }
+      }
+
+      _contrastChanged(val){
+        if(this._contrast.minimum != this._contrast.maximum)
+        {  
+          this._ready |= 0x0004;
+          this._contrast_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0004;
+          this._contrast_class = "";
+        }
+      }
+
+      _hueChanged(val){
+        if(this._hue.minimum != this._hue.maximum)
+        {  
+          this._ready |= 0x0008;
+          this._hue_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0008;
+          this._hue_class = "";
+        }
+      }
+
+      _gramaChanged(val){
+        if(this._grama.minimum != this._grama.maximum)
+        {  
+          this._ready |= 0x0010;
+          this._grama_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0010;
+          this._grama_class = "";
+        }
+      }
+    
+      _sharpnessChanged(val){
+        if(this._sharpness.minimum != this._sharpness.maximum)
+        {  
+          this._ready |= 0x0020;
+          this._sharpness_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0020;
+          this._sharpness_class = "";
+        }
+      }
+
+      _backlight_compensationChanged(val){
+        if(this._backlight_compensation.minimum != this._backlight_compensation.maximum)
+        {  
+          this._ready |= 0x0040;
+          this._backlight_compensation_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0040;
+          this._backlight_compensation_class = "";
+        }
+      }
+      
+      _powerline_frequencyChanged(val){
+        if(this._powerline_frequency.minimum != this._powerline_frequency.maximum)
+        {  
+          this._ready |= 0x0080;
+          this._powerline_frequency_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0080;
+          this._powerline_frequency_class = "";
+        }
+      }
+      
+      _image_qualityChanged(val){
+        if(this._image_quality.minimum != this._image_quality.maximum)
+        {  
+          this._ready |= 0x0080;
+          this._image_quality_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0080;
+          this._image_quality_class = "";
+        }
+      }
+
+      _flipChanged(val){
+        if(this._flip.minimum != this._flip.maximum)
+        {  
+          this._ready |= 0x0100;
+          this._flip_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0100;
+          this._flip_class = "";
+        }
+      }
+
+      _mirrorChanged(val){
+        if(this._mirror.minimum != this._mirror.maximum)
+        {  
+          this._ready |= 0x0200;
+          this._mirror_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x0200;
+          this._mirror_class = "";
+        }
+      }
+
+      _readyChanged(val){
+        if((val & 0x03FF) === 0x03FF)
+        {
+            this.$.loginButton_id.disabled = false;
+            this._loginButton_class = this._loginButton_class.replace("nc200-disabled","");
+        }
+        else
+        {
+          this.$.loginButton_id.disabled = true;
+          if(this._loginButton_class.indexOf("nc200-disabled") < 0)
+          {
+            this._loginButton_class = this._loginButton_class + " nc200-disabled ";
+          }
+        }        
+      }    
+    }
+
+    window.customElements.define(Nc200VideoCtrls.is, Nc200VideoCtrls);
+  </script>
+</dom-module>

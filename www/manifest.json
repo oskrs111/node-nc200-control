@@ -1,0 +1,6 @@
+{
+  "name": "nc200-control",
+  "short_name": "nc200-control",
+  "start_url": "/",
+  "display": "standalone"
+}

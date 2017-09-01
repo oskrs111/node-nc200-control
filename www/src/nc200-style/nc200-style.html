@@ -1,0 +1,58 @@
+<dom-module id="nc200-style-module">
+<template>
+<style>
+    *{
+        --layout-padding: 1rem;
+    }
+
+    paper-input.nc200-input
+    {
+    margin-left: var(--layout-padding);
+    margin-bottom: var(--layout-padding);
+    min-width: calc(30% - (var(--layout-padding)*2));
+    padding: 7px;
+    border: 1px solid transparent;
+    }
+
+    paper-button.nc200-button {
+    background-color: var(--paper-indigo-500);
+    margin-left: var(--layout-padding);
+    width: 7rem;
+    height: 3rem;   
+    color: white;        
+    }
+
+    paper-button.nc200-disabled {
+    color: white;
+    background-color: var(--paper-grey-200);    
+    transition: background-color 1s;    
+    }
+
+    paper-button.nc200-disabled:hover {
+    cursor: not-allowed !important;
+    }
+
+    paper-input.nc200-ready
+    {
+    border: 1px solid var(--paper-green-a100);
+    border-radius: 3px;
+    transition: border 3s;
+    }
+
+    paper-input.nc200-wait
+    {
+        animation: NC200-WAIT 1s infinite;
+        border: 1px solid var(--paper-yellow-a200);
+    }
+
+    @keyframes NC200-WAIT {
+      0%, 100% { background-color: --paper-yellow-a50; }
+     50% { background-color: --paper-yellow-a100; }
+    }
+
+@media only screen and (max-device-width: 716px) {
+    paper-input.nc200-input { min-width: calc(90% - (var(--layout-padding)*2));}
+}
+</style>
+</template>
+</dom-module>

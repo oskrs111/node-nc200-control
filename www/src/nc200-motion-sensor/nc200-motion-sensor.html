@@ -1,0 +1,129 @@
+<base href="./../../bower_components/">
+<link rel="import" href="polymer/polymer-element.html">
+<link rel="import" href="paper-card/paper-card.html">
+<link rel="import" href="paper-input/paper-input.html">
+
+<dom-module id="nc200-motion-sensor">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        --layout-padding: 1rem;
+      }
+
+      #wrapper
+      {
+        width: 100%;       
+      }
+      
+      #flexWrapper
+      {
+        display: flex;        
+        flex-direction: row;        
+        align-content: baseline;  
+        padding: 15px;
+      }
+      
+      #streamImg
+      {
+        width: 90%;
+      }
+
+      iframe
+      {
+        border: 0px solid transparent;
+        padding: 0px;
+        margin: 0px;
+        width: calc([[_streamW]] + 12px);
+        height:[[_streamH]];
+      }
+
+      .ms-row
+      {
+        box-sizing: border-box;
+        display: block;
+        margin: 0;
+        padding:0;
+        border: 0;
+        width: [[_streamW]];
+        background-color: rgba(0,0,200,0.5);
+        height: calc([[_streamH]] / 5);
+        position: absolute;
+      }
+      
+    @media only screen and (max-device-width: 716px) {
+      #streamImg{ width: 100%;}
+    }  
+
+    </style>
+    <paper-card id="wrapper" heading="NC200 Motion Sensor">
+    <div id="flexWrapper"> 
+    <iframe id="streamFrame_id" src="[[_url]]"></iframe>
+      <div class="ms-row">
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
+      </div>
+    </div>
+    <div id="footer">  
+   
+    </div>
+    </paper-card>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    const serverPort = "8080";
+    const servicePath = "/stream/getvideo"
+    class Nc200MotionSensor extends Polymer.Element {
+      static get is() { return 'nc200-motion-sensor'; }
+      static get properties() {
+        return {
+          _url: {type: String},
+          _streamW: {type: String, value: "640px"},
+          _streamH: {type: String, value: "480px"}
+        };
+      }
+
+      ready() {
+        super.ready();                   
+        this.$.streamFrame_id.onload = this._iframeLoad();
+      }          
+     
+      update(data)
+      //OSLL: Expected data ->
+      //login, data: {ip: "192.168.X.X", 
+      //              user: "admin", 
+      //              password: "admin", 
+      //              ftpNotify: {...}, 
+      //              emailNotify: {...}}
+      //
+      {        
+        try {
+          let obj = JSON.parse(data);
+          this._url = "http://" + obj.user + ":" + btoa(obj.password) + "@" + obj.ip + ":" + serverPort + servicePath;
+        } catch (e) {
+          this.dispatchEvent(new CustomEvent('parseError_msg', {bubbles: true, composed: true, detail: e}));
+        }
+      }
+ 
+      _iframeLoad() {
+        var style = document.createElement('style');        
+        style.id = 'style_id';
+        style.type ='text/css';
+        style.innerHTML = 'body{ margin: auto; padding: 0; width: '+ this._streamW + '; height: ' + this._streamH + '; }\r\n' +
+                          'img{ margin: auto; padding: 0; width: '+ this._streamW + '; height: ' + this._streamH + '; }';
+        this.$.streamFrame_id.contentDocument.head.appendChild(style);    
+        console.log("iframe style updated...");
+      }
+    }
+
+    window.customElements.define(Nc200MotionSensor.is, Nc200MotionSensor);
+  </script>
+</dom-module>

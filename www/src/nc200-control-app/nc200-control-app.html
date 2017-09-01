@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="nc200-control-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class Nc200ControlApp extends Polymer.Element {
+      static get is() { return 'nc200-control-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'nc200-control-app'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(Nc200ControlApp.is, Nc200ControlApp);
+  </script>
+</dom-module>

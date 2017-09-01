@@ -1,0 +1,180 @@
+<base href="./../../bower_components/">
+<link rel="import" href="polymer/polymer-element.html">
+<link rel="import" href="paper-card/paper-card.html">
+<link rel="import" href="paper-input/paper-input.html">
+
+<dom-module id="nc200-fontend-login">
+  <template>
+    <style include="nc200-style-module">
+      :host {
+        display: block;
+        width: 100%;       
+      }
+
+      #wrapper
+      {
+        width: 100%;       
+      }
+      
+      #flexWrapper
+      {
+        display: flex;        
+        flex-direction: row;        
+        align-content: baseline;  
+        padding: 15px;
+      }
+
+      #flexColumnLeft
+      {
+        justify-content: flex-start;
+        display: flex;       
+        flex-wrap: wrap; 
+        flex-direction: row;
+        align-content: baseline;  
+        width: calc(80% - (var(--layout-padding)*2));
+      }
+
+      #flexColumnRight
+      {
+        justify-content: flex-end;
+        display: flex;        
+        flex-direction: row;
+        align-content: baseline;  
+        width: calc(20% - (var(--layout-padding)*2));
+      }
+
+    @media only screen and (max-device-width: 716px) {
+    #flexWrapper { flex-direction: column;}
+    #flexColumnLeft, #flexColumnRight{ flex-direction: column; justify-content: center; width: calc(100% - (var(--layout-padding)*2));}
+    }  
+
+    </style>
+    <paper-card id="wrapper" heading="NC200 Login">
+    <div id="flexWrapper">  
+    <div id="flexColumnLeft">    
+    <paper-input id="addrInput_id" class$="[[_addrInput_class]] nc200-input" always-float-label label="Ip Address" value="{{_ipaddr}}" ></paper-input>
+    <paper-input id="userInput_id" class$="[[_userInput_class]] nc200-input" always-float-label label="Username" value="{{_username}}" _username-changed="onChange"></paper-input>
+    <paper-input id="passInput_id" class$="[[_passInput_class]] nc200-input" always-float-label label="Password" value="{{_password}}" _password-changed="onChange"></paper-input>
+    </div>
+    <div id="flexColumnRight">  
+    <paper-button id="loginButton_id" raised disabled class$="[[_loginButton_class]]" on-click="onClick">Login</paper-button>
+  </div>  
+  </div>
+
+    </paper-card>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class Nc200FrontendLogin extends Polymer.Element {
+      static get is() { return 'nc200-fontend-login'; }
+      static get properties() {
+        return {
+          _ipaddr: {type: String, notify: true, observer: '_ipaddrChanged'},
+          _username: {type: String, notify: true, observer: '_usernameChanged'},
+          _password: {type: String,notify: true, observer: '_passwordChanged'},
+          _ready: {type: Number, notify: true, value: 0, observer: '_readyChanged'},
+          _addrInput_class: {type: String, notify: false, value: ""},
+          _userInput_class: {type: String, notify: false, value: ""},
+          _passInput_class: {type: String, notify: false, value: ""},
+          _loginButton_class: {type: String, notify: false, value: "nc200-button nc200-disabled"}
+        };
+      }
+
+      ready() {
+        super.ready();    
+      }
+      
+      onClick(){
+        let data = {ip: this._ipaddr,
+                   user: this._username,
+                   password: this._password}
+
+         this.dispatchEvent(new CustomEvent('doLogin_msg', {bubbles: true, 
+                                                            composed: true, 
+                                                            detail: data}));
+      }
+
+       update(data)
+      //OSLL: Expected data ->
+      //login, data: {ip: "192.168.X.X", 
+      //              user: "admin", 
+      //              password: "admin", 
+      //              ftpNotify: {...}, 
+      //              emailNotify: {...}}
+      //
+      {        
+        try {
+          let obj = JSON.parse(data);
+          this._ipaddr = obj.ip;
+          this._username = obj.user;
+          this._password = obj.password;                              
+          
+        } catch (e) {
+          this.dispatchEvent(new CustomEvent('parseError_msg', {bubbles: true, composed: true, detail: e}));
+        }
+      }
+
+      _ipaddrChanged(val){ 
+        if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(val))  
+        {  
+          this._ready |= 0x01;
+          this._addrInput_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x01;
+          this._addrInput_class = "";
+        }
+      }
+
+      _usernameChanged(val){
+        if(val.length > 1)
+        {  
+          this._ready |= 0x02;
+          this._userInput_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x02;
+          this._userInput_class = "";
+        }
+      }
+
+      _passwordChanged(val){
+        if(val.length > 1)
+        {  
+          this._ready |= 0x04;
+          this._passInput_class = "nc200-ready";
+        }  
+        else
+        {
+          this._ready &= ~0x04;
+          this._passInput_class = "";
+        }
+      }
+
+      _readyChanged(val){
+        if((val & 0x07) === 0x07)
+        {
+            this.$.loginButton_id.disabled = false;
+            this._loginButton_class = this._loginButton_class.replace("nc200-disabled","");
+        }
+        else
+        {
+          this.$.loginButton_id.disabled = true;
+          if(this._loginButton_class.indexOf("disabled") < 0)
+          {
+            this._loginButton_class = this._loginButton_class + " nc200-disabled ";
+          }
+        }
+        console.log(val);
+      }
+    }
+
+    window.customElements.define(Nc200FrontendLogin.is, Nc200FrontendLogin);
+  </script>
+</dom-module>

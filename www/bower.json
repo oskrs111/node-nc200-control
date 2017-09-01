@@ -1,0 +1,31 @@
+{
+  "name": "node-nc200-control",
+  "homepage": "https://github.com/oskrs111/node-nc200-control",
+  "authors": [
+    "Oscar Sanz <oskrs111@gmail.com>"
+  ],
+  "description": "nc200 camera tool",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "webcomponentsjs": "latest",
+    "app-layout": "2.0.0",
+    "paper-icon-button": "2.0.0",
+    "paper-button": "2.0.0",
+    "iron-icons": "2.0.0",
+    "iron-image": "2.0.0",
+    "paper-input": "^2.0.1",
+    "paper-checkbox": "^2.0.1"
+  },
+  "manual": {
+    "paper-card": "2.0.0"
+  }
+}
