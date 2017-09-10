@@ -42,6 +42,11 @@
         margin-bottom: 1rem;
     }
 
+    .layout-control
+    {
+      margin: 0 0 1rem 1rem;      
+    }
+
   .inner_shadow{
     box-shadow: inset 4px 3px 10px -3px #ABABAB;
     -webkit-box-shadow: inset 4px 3px 10px -3px #ABABAB;
@@ -79,7 +84,10 @@
 <app-drawer id="drawer_id" swipe-open>
 <div id="drawerWrapper_id">  
 <paper-checkbox class="layout-control" checktarget="loginInterface_id"      checked>Login Form</paper-checkbox>  
+<!--
 <paper-checkbox class="layout-control" checktarget="liveViewInterface_id"   checked>Live View</paper-checkbox>  
+-->
+<paper-checkbox class="layout-control" checktarget="liveViewInterface_id"   checked>Motion Sensor</paper-checkbox>  
 <paper-checkbox class="layout-control" checktarget="videoCtrlsInterface_id" checked>Video Controls</paper-checkbox>  
 </div>
 </app-drawer>

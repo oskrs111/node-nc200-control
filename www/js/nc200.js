@@ -20,8 +20,8 @@ const gGetDefaultPaths = ["getvideosetting",
 
 const gGetDefaultPathArgs = {getvideoctrls:{all:"any value"}};
 
-const gSetDefaultPaths = ["setvideoctrls"
-						 ];
+const gSetDefaultPaths = ["setvideoctrls",
+						 "mdconf"];
 
 class nc200QueweItem {
 	constructor(path,data){
@@ -142,10 +142,10 @@ class nc200device {
 	}
 	
 	_ajaxCallback(err, res, body)
-	{		
+	{	
+		console.log("_ajaxCallback()", res.req.path, body);	
 		if(res !== undefined)
-		{
-			//console.log(res.req.path);
+		{			
 			switch(res.statusCode)
 			{
 				case 200:
@@ -159,7 +159,7 @@ class nc200device {
 				default:
 				break;								
 			}
-		}		
+		}				
 	}
 	
 	_processReply(res, body)
@@ -221,10 +221,10 @@ class nc200device {
 	//OSLL: The NC200 interface is not so consistent. Therefore the data update format
 	//		must be pre-processed according the nc200 expects...
 	{
+		let dta = {};
 		switch(path)
 		{
-			case "setvideoctrls":
-			let dta = {};
+			case "setvideoctrls":			
 			dta.brightness = data.brightness.value;
 			dta.contrast = data.contrast.value;
 			dta.saturation = data.saturation.value;
@@ -236,6 +236,18 @@ class nc200device {
 			dta.image_quality = data.hue.value;				   
 			dta.flip = data.flip.value;
 			dta.mirror = data.mirror.value;
+			return dta;			
+			break;
+
+			case "mdconf":
+			dta.is_enable = data.enable.value;
+			dta.precision = data.precision.value;
+			let t = 1;
+			for(let a of data.area) {
+				if(a === 1) dta['area' + t] = 1;
+				else dta['area' + t] = 0;
+				t++;
+			}		
 			return dta;			
 			break;
 
