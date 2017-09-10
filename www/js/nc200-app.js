@@ -18,10 +18,6 @@ var cam = new nc200.nc200device(config, function (eventPath, data){
 			//OSLL: Succesfull login saves credentials for next use...
 			window.localStorage.setItem("nc200-credentials", data);
 			break;
-		
-		case "mdconfsettinginit":	
-			document.getElementById("liveViewInterface_id").update(data);
-			break;
 
 		case "getvideoctrls":
 		case "setvideoctrls":
@@ -30,7 +26,7 @@ var cam = new nc200.nc200device(config, function (eventPath, data){
 
 
 		default:
-			//log.info("nc200-app, unhandled event: " + eventPath + ", data: " + data);
+			//log.info("Unhandled event: " + eventPath + ", data: " + data);
 			break;
 	}
 });
@@ -44,7 +40,8 @@ window.addEventListener('WebComponentsReady', function(e) {
 	document.addEventListener('change', (e) => {
 		if(e.timeStamp != lastTimestamp){
 		//OSLL: Some events are fired twice!	
-			lastTimestamp = e.timeStamp;						
+			lastTimestamp = e.timeStamp;			
+			//console.log(e);
 			if(e.target.className.indexOf("layout-control") >= 0)
 			{
 				let target = e.target.attributes["checktarget"].nodeValue;
@@ -60,13 +57,19 @@ window.addEventListener('WebComponentsReady', function(e) {
 	document.addEventListener('parseError_msg', process_error);
 	document.addEventListener('doLogin_msg', process_msg);
 	document.addEventListener('updateVideoCtrls_msg', process_msg);
-	document.addEventListener('updateMdConf_msg', process_msg);	
 
 	let data = window.localStorage.getItem("nc200-credentials");
 	if(data != null){
 	document.getElementById("loginInterface_id").update(data);
-	}					
+	}
+				
+	console.log('WebComponentsReady');	
 });
+
+function process_error(data)
+{	
+	console.log(data);	
+}
 
 function process_msg(data)
 {
@@ -80,19 +83,11 @@ function process_msg(data)
 			cam.updateRequest("setvideoctrls",data.detail);
 			break;
 
-		case "updateMdConf_msg":	
-			//OSLL: This command does not retourn with current data update so we add manual request after the update...
-			cam.updateRequest("mdconf",data.detail);			
-			cam.updateRequest("mdconfsettinginit",{});			
-			break;
-
 		default:
 			console.log("process_msg->", data.detail);
 			break;
-	}	
+	}
+	
+	
 }
 
-function process_error(data)
-{	
-	console.log(data);	
-}

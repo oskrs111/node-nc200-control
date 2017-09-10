@@ -1,18 +1,15 @@
-<link rel="import" href="./../nc200-style/nc200-style.html">
 <base href="./../../bower_components/">
 <link rel="import" href="polymer/polymer-element.html">
 <link rel="import" href="paper-card/paper-card.html">
 <link rel="import" href="paper-input/paper-input.html">
-<link rel="import" href="paper-ripple/paper-ripple.html">
- 
+
 <dom-module id="nc200-motion-sensor">
   <template>
-  <style include="nc200-style-module">
+    <style>
       :host {
         display: block;
         width: 100%;
         --layout-padding: 1rem;
-        --grid-color: rgba(0,255,0,0.5);
       }
 
       #wrapper
@@ -27,14 +24,6 @@
         align-content: baseline;  
         padding: 15px;
       }
-
-      #flexWrapperBot
-      {
-        display: flex;        
-        flex-direction: row;        
-        align-content: baseline;  
-        padding: 15px;
-      }      
       
       #streamImg
       {
@@ -43,89 +32,26 @@
 
       iframe
       {
-        border: 1px solid transparent;
+        border: 0px solid transparent;
         padding: 0px;
         margin: 0px;
         width: calc([[_streamW]] + 12px);
         height:[[_streamH]];
       }
 
-      .ms-wrap
-      {
-        background-color: transparent;
-        box-sizing: border-box;
-        display: block;
-        margin: 0;
-        padding:0;        
-        border: 0;
-        border-top: 1px solid var(--grid-color);
-        border-left: 1px solid var(--grid-color);
-        position: absolute;        
-        height: [[_streamH]];
-        width: [[_streamW]];        
-      }
-
       .ms-row
       {
-        background-color: transparent;
         box-sizing: border-box;
         display: block;
         margin: 0;
         padding:0;
         border: 0;
-        border-bottom: 1px solid var(--grid-color);
-        position: relative;
-        width: calc(100% + 1px);        
-        height: calc(100% / 5);        
+        width: [[_streamW]];
+        background-color: rgba(0,0,200,0.5);
+        height: calc([[_streamH]] / 5);
+        position: absolute;
       }
       
-      .ms-cell
-      {        
-        box-sizing: border-box;
-        display: inline-block;
-        margin: 0;
-        padding:0;
-        border: 0;
-        border-right:  1px solid var(--grid-color);
-        position: relative;
-        width: calc(100% / 5);       
-        height: 100%;      
-        cursor: pointer;   
-      }
-      .ms-cell:hover
-      {
-        background-color: rgba(0,0,200,0.5);
-      }
-
-      .ms-cell-selected
-      {
-        background-color: rgba(0,200,0,0.25);       
-      }
-
-      .ms-cell-wait
-      {
-        background-color: rgba(200,200,0,0.25);       
-      }
-
-      #flexColumnLeft
-      {
-        justify-content: flex-start;
-        display: flex;       
-        flex-wrap: wrap; 
-        flex-direction: row;
-        align-content: baseline;  
-        width: calc(80% - (var(--layout-padding)*2));
-      }
-
-      #flexColumnRight
-      {
-        justify-content: flex-end;
-        display: flex;        
-        flex-direction: row;
-        align-content: baseline;  
-        width: calc(20% - (var(--layout-padding)*2));
-      }
-
     @media only screen and (max-device-width: 716px) {
       #streamImg{ width: 100%;}
     }  
@@ -134,57 +60,16 @@
     <paper-card id="wrapper" heading="NC200 Motion Sensor">
     <div id="flexWrapper"> 
     <iframe id="streamFrame_id" src="[[_url]]"></iframe>
-    <div id="msWrapper" class="ms-wrap">  
       <div class="ms-row">
-        <div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --></div>
-     
-     <div class="ms-row">
-        <div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --></div>
-
-     <div class="ms-row">
-        <div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --></div>
-
-     <div class="ms-row">
-        <div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --></div>
-
-     <div class="ms-row">
-        <div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --><div class="ms-cell"><paper-ripple></paper-ripple></div><!--
-     --></div>
-
-    </div>
-    </div>
-    <div id="flexWrapperBot">  
-      <div id="flexColumnLeft">    
-      <paper-input id="enable_id" class$="[[_enable_class]] nc200-input" type="number" always-float-label label="Enable" value="{{_enable.value}}" min="{{_enable.minimum}}" max="{{_enable.maximum}}"></paper-input>
-      <paper-input id="precision_id" class$="[[_precision_class]] nc200-input" type="number" always-float-label label="Precision" value="{{_precision.value}}" min="{{_precision.minimum}}" max="{{_precision.maximum}}"></paper-input>            
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
+        <div class="ms-cell"></div>
       </div>
-      <div id="flexColumnRight">  
-      <paper-button id="loginButton_id" raised disabled class$="[[_loginButton_class]] nc200-control" on-click="onUpdate">Update</paper-button>
-      </div> 
+    </div>
+    <div id="footer">  
+   
     </div>
     </paper-card>
   </template>
@@ -202,194 +87,29 @@
         return {
           _url: {type: String},
           _streamW: {type: String, value: "640px"},
-          _streamH: {type: String, value: "480px"},
-          _enable: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
-          _precision: {type: Object, notify: true, value: {value:0, minimum:0, maximum:0}},
-          _enable_class: {type: String, notify: false, value: ""},
-          _precision_class: {type: String, notify: false, value: ""},
-          _ready: {type: Number, notify: true, value: 0, observer: '_readyChanged'},
-          _loginButton_class: {type: String, notify: false, value: "nc200-button nc200-disabled"}
+          _streamH: {type: String, value: "480px"}
         };
       }
 
-       static get observers() {
-        return [
-            '_enableChanged(_enable.value)',
-            '_precisionChanged(_precision.value)'
-          ]
-       }
-
       ready() {
         super.ready();                   
-        //OSLL: Dynamic cell setup...
-        let cells = this.$.msWrapper.querySelectorAll("div.ms-cell");
-        let t = 0;
-        for(let c of cells)
-        {
-          c.cellNum = "" + t++;
-          c.cellSelected = "false";
-          c.addEventListener("click", (e) => {
-            this._click(e);
-          }, false);
-        }
-
         this.$.streamFrame_id.onload = this._iframeLoad();
       }          
      
       update(data)
       //OSLL: Expected data ->
-      //Login, data: {"ip": "192.168.X.X", 
-      //              "user": "admin", 
-      //              "password": "admin", 
-      //              "ftpNotify": {...}, 
-      //              "emailNotify": {...}}
+      //login, data: {ip: "192.168.X.X", 
+      //              user: "admin", 
+      //              password: "admin", 
+      //              ftpNotify: {...}, 
+      //              emailNotify: {...}}
       //
-      //or ->
-      //Motion sensor data: {"errorCode":"0",
-      //                     "is_enable":"1",
-      //                     "precision":"2",
-      //                     "area":[1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,0]}
-      // 
       {        
         try {
           let obj = JSON.parse(data);
-          if(typeof obj.ip != 'undefined') {          
-          //OSLL: Login update...  
-            this._url = "http://" + obj.user + ":" + btoa(obj.password) + "@" + obj.ip + ":" + serverPort + servicePath;
-          }
-          else {
-          //OSLL: Login motion sensor update. Note that here the nc200 interface does not inform
-          //      about maximum and minimum values...
-          this._enable.minimum = 0;
-          this._enable.maximum = 1;
-          this._enable.value = obj.is_enable;
-          this.notifyPath('_enable.minimum');
-          this.notifyPath('_enable.maximum');
-          this.notifyPath('_enable.value');
-
-          this._precision.minimum = 0;
-          this._precision.maximum = 2;
-          this._precision.value = obj.precision;
-          this.notifyPath('_precision.minimum');
-          this.notifyPath('_precision.maximum');
-          this.notifyPath('_precision.value');
-
-          this._area2grid(obj.area);
-          }
-
+          this._url = "http://" + obj.user + ":" + btoa(obj.password) + "@" + obj.ip + ":" + serverPort + servicePath;
         } catch (e) {
           this.dispatchEvent(new CustomEvent('parseError_msg', {bubbles: true, composed: true, detail: e}));
-        }
-      }
-
-      _area2grid(area) {
-        let cells = this.$.msWrapper.querySelectorAll("div.ms-cell");
-        let t = 0;
-        for(let c of cells)
-        {               
-          c.cellSelected = "false";
-          c.classList.remove("ms-cell-selected");
-          c.classList.remove("ms-cell-wait");
-          try {
-            if(area[t] === 1) {
-               c.cellSelected = "true";               
-               c.classList.add("ms-cell-selected");   
-            }     
-          } catch (e) {
-            this.dispatchEvent(new CustomEvent('parseError_msg', {bubbles: true, composed: true, detail: e}));
-          }
-          t++;
-        }        
-      }
-
-      _grid2area() {
-        let area = [];
-        let cells = this.$.msWrapper.querySelectorAll("div.ms-cell");
-        let t = 0;
-        for(let c of cells)
-        {               
-          (c.cellSelected === "true") ? area[t] = 1 : area[t] = 0;                 
-          t++;
-        }                
-        return area;
-      }
-
-      _setGridWait()
-      {
-        let cells = this.$.msWrapper.querySelectorAll("div.ms-cell");        
-        for(let c of cells)
-        {               
-          c.cellSelected = "false";
-          c.classList.remove("ms-cell-selected");
-          c.classList.add("ms-cell-wait");
-        }                
-      }
-
-      onUpdate(){
-        let data = {enable: this._enable,
-                   precision: this._precision,
-                   area: this._grid2area()
-                  };
-
-         this.dispatchEvent(new CustomEvent('updateMdConf_msg', {bubbles: true, composed: true, detail: data}));
-
-         this._enable_class = "nc200-wait";
-         this._precision_class = "nc200-wait";      
-         this._setGridWait();   
-      }
-
-      _enableChanged(val){        
-        if(this._enable.minimum != this._enable.maximum)
-        {            
-          this._ready |= 0x0001;
-          this._enable_class = "nc200-ready";
-        }  
-        else
-        {         
-          this._ready &= ~0x0001;
-          this._enable_class = "";
-        }
-      }
-
-      _precisionChanged(val){        
-        if(this._precision.minimum != this._precision.maximum)
-        {            
-          this._ready |= 0x0002;
-          this._precision_class = "nc200-ready";
-        }  
-        else
-        {         
-          this._ready &= ~0x0002;
-          this._precision_class = "";
-        }
-      } 
-     
-      _readyChanged(val){
-        if((val & 0x0003) === 0x0003)
-        {
-            this.$.loginButton_id.disabled = false;
-            this._loginButton_class = this._loginButton_class.replace("nc200-disabled","");
-        }
-        else
-        {
-          this.$.loginButton_id.disabled = true;
-          if(this._loginButton_class.indexOf("nc200-disabled") < 0)
-          {
-            this._loginButton_class = this._loginButton_class + " nc200-disabled ";
-          }
-        }        
-      }  
-
-      _click(e)
-      {                
-        if(e.currentTarget.cellSelected === "false"){
-          e.currentTarget.cellSelected = "true";
-          e.currentTarget.classList.remove("ms-cell-selected");
-          e.currentTarget.classList.add("ms-cell-selected");          
-        }
-        else {
-          e.currentTarget.cellSelected = "false";
-          e.currentTarget.classList.remove("ms-cell-selected");
         }
       }
  
