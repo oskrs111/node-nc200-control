@@ -103,6 +103,9 @@ class nc200device {
 				break;
 
 			case "sync":					
+				let syncData = {
+					length: 0
+				};
 				//OSLL: Add to quewe all data retrieve paths...
 				for(var t in gGetDefaultPaths)
 				{
@@ -111,7 +114,10 @@ class nc200device {
 					if(append == undefined) append = {};
 					let item = new nc200QueweItem(path, append);
 					this._quewe.push(item);
-				}				
+					syncData.length += 1;
+				}
+				//OSLL: Anounces the initial sync task...					
+				this._updateCallback("syncData", JSON.stringify(syncData));			
 				this._setState("idle");	
 				break;	
 
@@ -143,9 +149,9 @@ class nc200device {
 	
 	_ajaxCallback(err, res, body)
 	{	
-		console.log("_ajaxCallback()", res.req.path, body);	
-		if(res !== undefined)
-		{			
+				
+		if(res !== undefined) {			
+			console.log("_ajaxCallback()", res.req.path, body);	
 			switch(res.statusCode)
 			{
 				case 200:
@@ -159,7 +165,10 @@ class nc200device {
 				default:
 				break;								
 			}
-		}				
+		}		
+		else if(err !== undefined) {
+			this._updateCallback("ajaxError", JSON.stringify(err));			
+		}
 	}
 	
 	_processReply(res, body)
@@ -292,7 +301,8 @@ class nc200device {
 		this._request({
 		url: 'http://' + this._config.ip + '/'+ path +'.fcgi',
 		method: 'POST',
-		data: data,			
+		data: data,		
+		//timeout: 500,	
 		headers: {
 			'Connection': 'keep-alive',
 			'Cache-Control': 'no-cache',

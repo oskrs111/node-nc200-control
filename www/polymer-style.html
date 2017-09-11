@@ -3,6 +3,7 @@
 
   :root {
     --main-domular-color: #4285f4;
+    --complement-domular-color: #f48942;
     --nebula-switch-checked-color: var(--main-domular-color);
     --nebula-switch-color: lightgrey;
   }
@@ -29,15 +30,22 @@
     paper-icon-button + [main-title] {
       margin-left: 24px;
     }
+
     paper-progress {
       display: block;
-      width: 100%;
-      --paper-progress-active-color: rgba(255, 255, 255, 0.5);
+      --paper-progress-active-color: var(--complement-domular-color);
       --paper-progress-container-color: transparent;
+      --paper-progress-height: 5px;
     }
+
+    paper-input {
+      --paper-input-container-focus-color: var(--complement-domular-color);
+    }
+
     paper-card {
       margin-bottom: 1rem;
     }
+
     app-header {
       @apply --layout-fixed-top;
       color: #fff;

@@ -62,32 +62,30 @@
   <app-header reveals>
   <app-toolbar>
     <paper-icon-button icon="menu" onclick="drawer_id.toggle()"></paper-icon-button>
-    <div main-title>tp-Link NC200 Control App</div>
+    <div main-title>tp-Link NC200 Control App</div>    
     <!--
     <paper-icon-button icon="delete"></paper-icon-button>
     <paper-icon-button icon="search"></paper-icon-button>
     <paper-icon-button icon="close"></paper-icon-button>
     <paper-progress value="10" indeterminate bottom-item></paper-progress>
     -->
-  </app-toolbar>
+    <paper-progress id="progressBar_id" value="0" disabled  bottom-item></paper-progress> 
+  </app-toolbar>  
 </app-header>
+
 
 <div id="mainWrapper_id">
 <nc200-fontend-login id="loginInterface_id"      class="paper"></nc200-fontend-login>
-<nc200-motion-sensor id="liveViewInterface_id"   class="paper"></nc200-motion-sensor>
-<!--
-<nc200-live-view     id="liveViewInterface_id"   class="paper"></nc200-live-view>
--->
+<nc200-motion-sensor id="motionSensorInterface_id"   class="paper"></nc200-motion-sensor>
+<!--<nc200-live-view     id="liveViewInterface_id"   class="paper"></nc200-live-view>-->
 <nc200-video-ctrls   id="videoCtrlsInterface_id" class="paper"></nc200-video-ctrls>
 </div>  
 
 <app-drawer id="drawer_id" swipe-open>
 <div id="drawerWrapper_id">  
-<paper-checkbox class="layout-control" checktarget="loginInterface_id"      checked>Login Form</paper-checkbox>  
-<!--
-<paper-checkbox class="layout-control" checktarget="liveViewInterface_id"   checked>Live View</paper-checkbox>  
--->
-<paper-checkbox class="layout-control" checktarget="liveViewInterface_id"   checked>Motion Sensor</paper-checkbox>  
+<paper-checkbox class="layout-control" checktarget="loginInterface_id" checked>Login Form</paper-checkbox>  
+<!--<paper-checkbox class="layout-control" checktarget="liveViewInterface_id" checked>Live View</paper-checkbox>-->
+<paper-checkbox class="layout-control" checktarget="motionSensorInterface_id" checked>Motion Sensor</paper-checkbox>  
 <paper-checkbox class="layout-control" checktarget="videoCtrlsInterface_id" checked>Video Controls</paper-checkbox>  
 </div>
 </app-drawer>

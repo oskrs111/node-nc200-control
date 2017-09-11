@@ -1,6 +1,6 @@
 {
   "name": "node-nc200-control",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "electron based nc200 tp-Link wifi camera tool",
   "main": "main.js",
   "scripts": {

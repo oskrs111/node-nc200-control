@@ -12,6 +12,7 @@
     min-width: calc(30% - (var(--layout-padding)*2));
     padding: 7px;
     border: 1px solid transparent;
+    --paper-input-container-focus-color: var(--complement-domular-color);
     }
 
     paper-button.nc200-button {
@@ -43,6 +44,15 @@
     {
         animation: NC200-WAIT 1s infinite;
         border: 1px solid var(--paper-yellow-a200);
+    }
+
+    paper-checkbox.nc200-checkbox
+    {
+        margin-left: var(--layout-padding);
+        margin-bottom: var(--layout-padding);
+        min-width: calc(30% - (var(--layout-padding)*2));
+        padding: 7px;
+        border: 1px solid transparent;
     }
 
     @keyframes NC200-WAIT {
