@@ -24,7 +24,8 @@
     "iron-image": "2.0.0",
     "paper-input": "^2.0.1",
     "paper-checkbox": "^2.0.1",
-    "paper-progress": "^2.0.1"
+    "paper-progress": "^2.0.1",
+    "paper-card": "polymerelements/paper-card#^2.0.0"
   },
   "manual": {
     "paper-card": "2.0.0"
