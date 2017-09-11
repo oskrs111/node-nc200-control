@@ -27,6 +27,7 @@ This release is provided also as binary distribution for:
 - Win32
 - Linux x64 (Not Tested)
 
+Just [downlnoad](https://github.com/oskrs111/node-nc200-control/releases) and unrar the provided files. 
 Then execute the **node-nc200-control** executable file.
 
 ## Building
