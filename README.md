@@ -36,31 +36,31 @@ As this application is Electron/Polymer based, use the standard steps to get cod
 There is a module dependence with "ajax-request". This module has a pending pull request for version 1.2.3 that adds format support on POST requests, needed by the main application. So in case you want to get all the source 
 code i suggest to get from my branch [oskrs111/ajax-request](https://github.com/oskrs111/ajax-request) and replace in /node_modules path**
 
-'''Batchfile
+```Batchfile
 > git clone https://github.com/oskrs111/node-nc200-control.git
-'''
+```
 
-'''Batchfile
+```Batchfile
 > cd node-nc200-control
-'''
+```
 
-'''Batchfile
+```Batchfile
 > node-nc200-control/npm install
-'''
+```
 
-'''Batchfile
+```Batchfile
 > node-nc200-control/cd www
-'''
+```
 
-'''Batchfile
+```Batchfile
 > node-nc200-control/www/bower install
-'''
+```
 
 ## Running
 Run the normal npm start command
 
-'''Batchfile
+```Batchfile
 > node-nc200-control/npm start
-'''
+```
 
 
