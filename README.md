@@ -19,14 +19,15 @@ This release provides support for:
 
 ## Support
 > Beta 0.0.2
-This release only has been tested witn NC200 Camera, firmware NC200_v2.1.7_160315_a, hardware V1.
+This release only has been tested witn NC200 Camera with **NC200_v2.1.7_160315_a** firmware, **V1** hardware.
 
 ## Releases
 > Beta 0.0.2
 This release is provided also as binary distribution for:
 - Win32
-- MacOs (Not Tested)
-- Linux (Not Tested)
+- Linux x64 (Not Tested)
+
+Then execute the **node-nc200-control** executable file.
 
 ## Building
 > Beta 0.0.2
@@ -34,7 +35,12 @@ As this application is Electron/Polymer based, use the standard steps to get cod
 
 **NOTICE:
 There is a module dependence with "ajax-request". This module has a pending pull request for version 1.2.3 that adds format support on POST requests, needed by the main application. So in case you want to get all the source 
-code i suggest to get from my branch [oskrs111/ajax-request](https://github.com/oskrs111/ajax-request) and replace in /node_modules path**
+code i suggest to get from my branch [oskrs111/ajax-request](https://github.com/oskrs111/ajax-request) and replace in /node_modules path.
+
+Meantime the "ajax-request" pull is merged on the master branch (or not) I suggest to download the binary releases ;-)
+**
+
+
 
 ```Batchfile
 > git clone https://github.com/oskrs111/node-nc200-control.git
@@ -62,5 +68,12 @@ Run the normal npm start command
 ```Batchfile
 > node-nc200-control/npm start
 ```
+
+Once the interface is shown, just enter the same **Ip Address**, **Username** and **Password** that you use on the NC200 web interface. Then click on **LOGIN** button to connect with NC200 camera.
+
+As soon as the data comes the **Motion Sensor** and **Video Controls** dialogs will update with current settings.
+If you want to modify any adjustment just do it and click **UPDATE** button. The modified data will be sent to the NC200 Camera and updated on the interface.
+
+**NOTICE: In my NC200 unit when any Video Control paramter is modified usually the flip parameter is not correctly updated on Camera, so many times is need to do the UPDATE twice to set correctly all the parameters**
 
 
